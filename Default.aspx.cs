@@ -13,10 +13,7 @@ namespace EmployeeSystemWebForm
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
-            {
-                GetEmployeeList();
-            }
+            
         }
         SqlConnection conn = new SqlConnection(@"Data Source=LAPTOP-SBDVLFF5\SQLEXPRESS;Initial Catalog=WebForm;Integrated Security=True");
         void GetEmployeeList()
@@ -102,6 +99,27 @@ namespace EmployeeSystemWebForm
                 DataTable dataTable = new DataTable();
                 Fetchcmd.Fill(dataTable);
                 GridView1.DataSource = dataTable;
+                GridView1.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        protected void FetchBYName_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                conn.Open();
+                SqlDataAdapter FetchBYNamecmd = new SqlDataAdapter("exec FETCHBYNAME_SP '" + TextBox2.Text+"'", conn);
+                DataTable dataTable1 = new DataTable();
+                FetchBYNamecmd.Fill(dataTable1);
+                GridView1.DataSource = dataTable1;
                 GridView1.DataBind();
             }
             catch (Exception ex)
